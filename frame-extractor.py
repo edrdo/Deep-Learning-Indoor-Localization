@@ -3,18 +3,19 @@ import math
 import numpy as np
 import os
 import sys
+import Common
 
 def handle(video_file, frames_required):
-  v =  cv2.VideoCapture(video_file)
+  v =  Common.VideoInput(video_file)
   label = '_'.join(os.path.splitext(os.path.basename(video_file))[0].split('_')[1:])
-  frame_count = int(v.get(cv2.CAP_PROP_FRAME_COUNT))
+  frame_count = int(v.frame_count)
   step = math.floor(frame_count / frames_required)
 
   print('==> Video file', video_file)
   print('Label', label)
-  print("Width", v.get(cv2.CAP_PROP_FRAME_WIDTH), "Height", v.get(cv2.CAP_PROP_FRAME_HEIGHT))
-  print("FPS", v.get(cv2.CAP_PROP_FPS))
-  print('# total frames:', frame_count)
+  print("Width", v.width, "Height", v.height)
+  print("FPS", v.fps)
+  print('# total frames:', v.frame_count)
   print('# required frames:', frames_required)
   print('# frame step:', step)
   
@@ -23,7 +24,7 @@ def handle(video_file, frames_required):
   fout = 0
   csv_out = open("out/%s_%s.csv" % (prefix,label),"w")
   while fout < frames_required:
-    more, frame = v.read()
+    more, frame = v.next_frame()
     if not more:
       break
     if fin % step == 0:
