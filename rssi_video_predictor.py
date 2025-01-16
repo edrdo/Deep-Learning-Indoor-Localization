@@ -32,10 +32,7 @@ def handle(csv_file, video_file, model_id):
     while True:
       if v.current_time < end:
         label_f_count += 1
-        f = cv2.cvtColor(f, cv2.COLOR_BGR2RGB)
-        r = m.classify(f, max_results=1, min_confidence=0)
-        #print(m.predict(f))
-        #print(r)
+        r = m.classify(cv2.cvtColor(f, cv2.COLOR_BGR2RGB), max_results=1, min_confidence=0)
         if r[0][0] == label:
           label_p_count +=1 
         if not first_frame:
@@ -49,6 +46,5 @@ def handle(csv_file, video_file, model_id):
 csv_file = sys.argv[1]
 video_file = sys.argv[2]
 model_id = sys.argv[3]
-output_file = 
 handle(csv_file, video_file, model_id)
 
